@@ -3,6 +3,7 @@ package Restaraunt;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 //okay so instead of menu tabs i lowk wanna do swapping jpanels through jbuttons
 //like, if u click on a button from a jpanel it links to a diff one and makes this one entirely disabled/invisible
 
@@ -25,6 +26,9 @@ public class framing extends JFrame {
     JPanel entrees = new JPanel();
     JPanel desserts = new JPanel();
     JLabel weafy = new JLabel(weafeon);
+    JScrollPane mainScroll = new JScrollPane();
+
+    ArrayList<item> activeOrders = new ArrayList<>();
 
     public framing(){
         setLayout(null);
@@ -41,20 +45,23 @@ public class framing extends JFrame {
         //add(weafy);
 //        add(activePanel);
         appetizers.setBounds(20,20,640,500);
+        appetizers.setPreferredSize(new Dimension(640, 1200));
         entrees.setBounds(20,20,640,500);
+        entrees.setPreferredSize(new Dimension(640, 1200));
         desserts.setBounds(20,20,640,500);
+        desserts.setPreferredSize(new Dimension(640, 1200));
         checkOut.setBounds(20,20,640,500);
         appetizers.setBackground(Color.PINK);
         appetizers.setLayout(null);
-
+        mainScroll.setBounds(20,20,640,500);
+        mainScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        add(mainScroll);
         //make an arraylist of items on the menu!! (so a jpanel with image, text heading and desc, price, buttons)
         JPanel app1 = new JPanel();
         app1.setLayout(null);
         app1.setBounds(30,30,580,200);
-        JPanel app2 = new JPanel();
-        app2.setLayout(null);
-        app2.setBounds(30,500,580,600);
-        appetizers.add(app2);
+
+        //470-250 = 220
         app1.add(weafy);
         weafy.setBounds(375,20,150,150);
         JTextArea app1Desc = new JTextArea("this is a test aareeaa.. blwwggghh imagine this is a good description about food or smth");
@@ -70,7 +77,7 @@ public class framing extends JFrame {
         app1Plus.setBounds(180,140,90,30);
 
         appetizers.add(app1);
-
+        appetizers.add(create(new item("hamborger", "mmmm yuum yum breakfast burrito", 1, 12.0), 250, Color.green));
         entrees.setBackground(Color.CYAN);
         desserts.setBackground(Color.YELLOW);
         checkOut.setBackground(Color.MAGENTA);
@@ -113,8 +120,61 @@ public class framing extends JFrame {
             System.out.println(event.getActionCommand());
             activePanel = checkOut;
         }
-        add(activePanel);
-        activePanel.repaint();
+        mainScroll.setViewportView(activePanel);
+
+        revalidate();
+        repaint();
+
+
         //activePanel = ;
     }
+
+    public JPanel create(item food, int y, Color color){
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(color);
+        //panel.add(weafy);
+        //weafy.setBounds(375,20,150,150);
+        JTextArea panelText = new JTextArea("this is a test aareeaa.. blwwggghh imagine this is a good description about food or smth");
+        panelText.setEditable(false);
+        panelText.setBounds(40,20,250,70);
+        panelText.setWrapStyleWord(true);
+        panelText.setLineWrap(true);
+        panel.add(panelText);
+        //new image from the diraectory
+        //Image.setBounds(375,60,150,150);
+        //add img
+        JLabel foodName = new JLabel(food.getName());
+        foodName.setBounds(425,5,100,40);
+        panel.add(foodName);
+        JButton panelPlus = new JButton("+1 order");
+        JButton panelMinus = new JButton("-1 order");
+        panelMinus.setEnabled(false);
+        panel.add(panelPlus);
+        panel.add(panelMinus);
+        panelPlus.addActionListener(e-> addOrder(food));
+        panelMinus.addActionListener(e-> removeOrder(food));
+        panelMinus.setBounds(60,110,90,30);
+        panelPlus.setBounds(180,110,90,30);
+        JLabel orders = new JLabel("0");
+        JLabel price = new JLabel("$"+food.getPricing()+"");
+        price.setBounds(40,160,90,30);
+        orders.setBounds(40,140,90,30);
+        panel.add(orders);
+        panel.add(price);
+        panel.setBounds(30,y,580,200);
+        return panel;
+    }
+
+    public void addOrder(item food){
+        activeOrders.add(food);
+    }
+    public void removeOrder(item food){
+        activeOrders.remove(food);
+        if(!activeOrders.contains(food)){
+            //disable that panels panelMinus button
+        }
+    }
+
+
 }
