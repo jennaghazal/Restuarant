@@ -8,7 +8,7 @@ public class MenuItem{
     double cost;
     int category;
     int orderCt;
-    String fileName
+    String fileName;
     public MenuItem(String name, String description, double cost, int category, String fileName){
 
         this.name = name;
