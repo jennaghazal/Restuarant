@@ -27,7 +27,9 @@ public class framing extends JFrame {
     JPanel desserts = new JPanel();
     JLabel weafy = new JLabel(weafeon);
     JScrollPane mainScroll = new JScrollPane();
-
+    JTable table = new JTable();
+    JScrollPane ttable = new JScrollPane();
+    ArrayList<String> headings = new ArrayList<>();
     ArrayList<item> activeOrders = new ArrayList<>();
 
     public framing(){
@@ -131,6 +133,16 @@ public class framing extends JFrame {
             }
 
         }
+        checkOut.setLayout(null);
+
+        headings.add("item");
+        headings.add("subtotal");
+
+        table = new JTable(new String[0][2], headings.toArray());
+        table.setBounds(0,0,300,300);
+        ttable = new JScrollPane(table);
+        ttable.setBounds(0,0,300,300);
+        checkOut.add(ttable);
 
         setVisible(true);
     }
@@ -154,6 +166,7 @@ public class framing extends JFrame {
         else if (event.getActionCommand() == "check-out"){
             System.out.println(event.getActionCommand());
             activePanel = checkOut;
+            updateTable();
         }
         JScrollPane appetPane = new JScrollPane(activePanel);
         add(appetPane);
@@ -185,13 +198,19 @@ public class framing extends JFrame {
         panel.add(foodName);
         JButton panelPlus = new JButton("+1 order");
         JButton panelMinus = new JButton("-1 order");
-        panelMinus.setEnabled(false);
+        if(food.getOrderCt()<1){
+            panelMinus.setEnabled(false);
+        }
+        else{
+            panelMinus.setEnabled(true);
+        }
+
         panel.add(panelPlus);
         panel.add(panelMinus);
-        panelPlus.addActionListener(e-> addOrder(food));
-        panelPlus.addActionListener(e-> refresh(panel));
-        panelMinus.addActionListener(e-> refresh(panel));
-        panelMinus.addActionListener(e-> removeOrder(food));
+        panelPlus.addActionListener(e-> addOrder(food,panel));
+
+//        panelMinus.addActionListener(e-> refresh(panel, food));
+        panelMinus.addActionListener(e-> removeOrder(food, panel));
         panelMinus.setBounds(60,110,90,30);
         panelPlus.setBounds(180,110,90,30);
         JLabel orders = new JLabel(food.getOrderCt()+"");
@@ -204,19 +223,69 @@ public class framing extends JFrame {
         return panel;
     }
 
-    public void addOrder(MenuItem food){
+    public void addOrder(MenuItem food, JPanel panel){
         food.addOrder();
+        refresh(panel, food);
     }
-    public void removeOrder(MenuItem food){
+    public void removeOrder(MenuItem food, JPanel panel){
         food.removeOrder();
-        if(!activeOrders.contains(food)){
-            //disable that panels panelMinus button
+        refresh(panel, food);
+    }
+    public void refresh(JPanel panel, MenuItem food){
+//        Container parent = panel.getParent();
+//        int index = parent.getComponentZOrder(panel);
+//        parent.remove(panel);
+//        JPanel newPanel = create(food, panel.getY(), panel.getBackground());
+//        parent.add(newPanel, index);
+//        parent.revalidate();
+//        parent.repaint();
+        JPanel newPanel = create(food, panel.getY(), panel.getBackground());
+        if(food.getCategory() == 0){
+            appetizers.remove(panel);
+            appetizers.add(newPanel);
         }
+        else if(food.getCategory() == 1){
+            entrees.remove(panel);
+            entrees.add(newPanel);
+        }
+        else{
+            desserts.remove(panel);
+            desserts.add(newPanel);
+        }
+        appetizers.revalidate();
+        appetizers.repaint();
+        entrees.repaint();
+        entrees.revalidate();
+        desserts.repaint();
+        desserts.revalidate();
     }
-    public void refresh(JPanel panel){
-        //System.out.println("i just refreshed heh");
-        //panel.getComponent(3).setEnabled(true);//enables the button, but this is only a temp fiixixxx
+    public void updateTable(){
+        checkOut.remove(ttable);
+        ArrayList<MenuItem> active = new ArrayList<>();
+        for(int a = 0; a< menuItems.size(); a++){
+            if(menuItems.get(a).getOrderCt() > 0){
+                for(int b = 0; b < menuItems.get(a).getOrderCt(); b++){
+                    active.add(menuItems.get(a));
+                }
+            }
+        }
+        String[][] data = new String[active.size()][2]; //edit this to be no of headers and the icecreams is an arraylist of icecream
+        int row = 0;
+        for(MenuItem i: active){
+            data[row][0] = i.getName();
+            data[row][1] = i.getCost() + "";
 
+            row++;
+        }
+        ttable.remove(table);
+        System.out.println("new table?");
+        table = new JTable(data, headings.toArray());
+        ttable.setViewportView(table);
+        ttable.revalidate();
+        ttable.repaint();
+
+        checkOut.add(ttable);
+        checkOut.repaint();
+        checkOut.revalidate();
     }
-
 }
