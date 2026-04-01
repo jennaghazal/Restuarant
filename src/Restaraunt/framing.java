@@ -283,7 +283,7 @@ public class framing extends JFrame {
         ttable.setViewportView(table);
         ttable.revalidate();
         ttable.repaint();
-
+        //recalculate jlabels for subtotal, total, and tip here!!!
         checkOut.add(ttable);
         checkOut.repaint();
         checkOut.revalidate();
