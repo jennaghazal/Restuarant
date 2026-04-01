@@ -31,7 +31,7 @@ public class framing extends JFrame {
     JScrollPane ttable = new JScrollPane();
     ArrayList<String> headings = new ArrayList<>();
     ArrayList<item> activeOrders = new ArrayList<>();
-
+    double tips = 0;
     public framing(){
         setLayout(null);
         setSize(700,700);
@@ -99,22 +99,22 @@ public class framing extends JFrame {
         desMenu.addActionListener(e -> changePane(e));
         checkMenu.addActionListener(e -> changePane(e));
 
-        menuItems.add(new MenuItem("takoyaki", "octopus fried in batter", 5.00, 0));
-        menuItems.add(new MenuItem("lemon shrimp", "lemony shrimp", 6.00, 0));
-        menuItems.add(new MenuItem("greek salad", "a classic salad", 4.50, 0));
-        menuItems.add(new MenuItem("falafel", "levantine pressed falafel", 5.00, 0));
-        menuItems.add(new MenuItem("fried cauliflower", "bowl of cauliflower stems fried, comes with garlic sauce", 3.50,0));
-        menuItems.add(new MenuItem("rice bowl", "basic bowl of white rice", 2.00, 0));
+        menuItems.add(new MenuItem("takoyaki", "octopus fried in batter", 5.00, 0, "src/Restuarant/Healing Kuma Takoyaki.jpeg"));
+        menuItems.add(new MenuItem("lemon shrimp", "lemony shrimp", 6.00, 0,"src/Restuarant/shrimp.jpeg"));
+        menuItems.add(new MenuItem("greek salad", "a classic salad", 4.50, 0, "src/Restuarant/greeksalad.jpeg"));
+        menuItems.add(new MenuItem("falafel", "levantine pressed falafel", 5.00, 0,"src/Restuarant/Homemade Falafel.jpeg"));
+        menuItems.add(new MenuItem("fried cauliflower", "bowl of cauliflower stems fried, comes with garlic sauce", 3.50,0,"src/Restuarant/Crispy Roasted Cauliflower.jpeg"));
+        menuItems.add(new MenuItem("rice bowl", "basic bowl of white rice", 2.00, 0, "src/Restuarant/ricebowl.jpeg"));
 
-        menuItems.add(new MenuItem("cat fish sandwiches", "cod sandwiches with lettuce", 8.00, 1));
-        menuItems.add(new MenuItem("chicken teriyaki", "teriyaki seasoned chicken, comes with rice", 10.00, 1));
-        menuItems.add(new MenuItem("seal sushi", "sushi fit for a seal - 6 rolls of choice (eel, scallop, salmon, crab, more)", 10.00, 1));
-        menuItems.add(new MenuItem("coconut curry", "classic coconut curry", 12.00, 1));
+        menuItems.add(new MenuItem("cat fish sandwiches", "cod sandwiches with lettuce", 8.00, 1,"src/Restuarant/Cat burger.JPG"));
+        menuItems.add(new MenuItem("chicken teriyaki", "teriyaki seasoned chicken, comes with rice", 10.00, 1,"src/Restuarant/Teriyaki.JPG"));
+        menuItems.add(new MenuItem("seal sushi", "sushi fit for a seal - 6 rolls of choice (eel, scallop, salmon, crab, more)", 10.00, 1, "src/Restuarant/Sushi.JPG"));
+        menuItems.add(new MenuItem("coconut curry", "classic coconut curry", 12.00, 1, "src/Restuarant/Curry.JPG"));
 
-        menuItems.add(new MenuItem("tiramisu", "layered coffee cake with ladyfingers", 6.00, 2));
-        menuItems.add(new MenuItem("seal ice cream", "lavender flavored ice cream with waffle cone, black carrayway and sesame seeds on top", 4.00,2));
-        menuItems.add(new MenuItem("cheesecake", "classic new york style cheesecake with random animal topping", 4.50, 2));
-        menuItems.add(new MenuItem("raspberry tarts", "assortment of raspberry tarts", 6.50, 2));
+        menuItems.add(new MenuItem("tiramisu", "layered coffee cake with ladyfingers", 6.00, 2, "src/Restuarant/Tiramisu.JPG"));
+        menuItems.add(new MenuItem("seal ice cream", "lavender flavored ice cream with waffle cone, black carrayway and sesame seeds on top", 4.00,2, "src/Restuarant/Seal ice cream.JPG"));
+        menuItems.add(new MenuItem("cheesecake", "classic new york style cheesecake with random animal topping", 4.50, 2, "src/Restuarant/Cheesecake.JPG"));
+        menuItems.add(new MenuItem("raspberry tarts", "assortment of raspberry tarts", 6.50, 2, "src/Restuarant/Tart.JPG"));
         int yApp = 30;
         int yEnt = 30;
         int yDes = 30;
@@ -204,7 +204,7 @@ public class framing extends JFrame {
         else{
             panelMinus.setEnabled(true);
         }
-
+        
         panel.add(panelPlus);
         panel.add(panelMinus);
         panelPlus.addActionListener(e-> addOrder(food,panel));
@@ -219,6 +219,11 @@ public class framing extends JFrame {
         orders.setBounds(40,140,90,30);
         panel.add(orders);
         panel.add(price);
+        
+        ImageIcon img = new ImageIcon(food.getFileName());
+        img = img.getScaledInstance(100,100, Image.SCALE_SMOOTH);
+        img.setBounds(375,20,150,150);
+        panel.add(img);
         panel.setBounds(20,y,580,200);
         return panel;
     }
@@ -284,8 +289,22 @@ public class framing extends JFrame {
         ttable.revalidate();
         ttable.repaint();
         //recalculate jlabels for subtotal, total, and tip here!!!
+        double total = calcTotal(active);
         checkOut.add(ttable);
         checkOut.repaint();
         checkOut.revalidate();
+    }
+
+    public double calcTotal(ArrayList<MenuItem> active){
+
+        double total = 0;
+
+
+        return total;
+    }
+
+    public double calcSubtotal(){
+
+
     }
 }
