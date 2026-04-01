@@ -8,13 +8,14 @@ public class MenuItem{
     double cost;
     int category;
     int orderCt;
-    public MenuItem(String name, String description, double cost, int category){
+    String fileName
+    public MenuItem(String name, String description, double cost, int category, String fileName){
 
         this.name = name;
         this.description = description;
         this.cost = cost;
         this.category = category;
-
+        this.fileName = fileName;
         orderCt = 0;
 
     }
@@ -48,5 +49,7 @@ public class MenuItem{
     public int getOrderCt(){
         return orderCt;
     }
-
+    public String getFileName(){
+        return fileName;
+    }
 }
